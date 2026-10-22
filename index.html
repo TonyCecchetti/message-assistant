@@ -553,7 +553,17 @@ function loadSharedMessageFromUrl() {
   messageInput.value = sharedText;
   messageInput.focus();
   messageInput.setSelectionRange(sharedText.length, sharedText.length);
+  if (!sharedText.trim()) {
+    setStatus("Shared message is empty. Add text before analyzing.");
+    return;
+  }
+
   setStatus("Shared message ready. Review it, then select Analyse message to add it to your inbox.");
+  analyse();
+
+  const currentUrl = new URL(window.location.href);
+  currentUrl.searchParams.delete("message");
+  window.history.replaceState(window.history.state, "", currentUrl.toString());
 }
 
 function renderContactProfiles(selectedName = "") {
